@@ -14,7 +14,7 @@ const Contact = () => {
         
         if (publicKey) {
             emailjs.init(publicKey);
-            console.log('EmailJS initialized successfully');
+            
         } else {
             console.error('VITE_EMAILJS_PUBLIC_KEY is undefined! Please check your environment variables.');
         }
@@ -52,7 +52,7 @@ const Contact = () => {
                 }
             );
             
-            console.log('Email sent successfully:', result);
+            
             setIsLoading(false);
             setFormData({name: '', email: '', message: ''});
             showAlertMessage('success', 'Message sent successfully!');

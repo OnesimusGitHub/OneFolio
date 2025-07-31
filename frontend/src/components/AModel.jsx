@@ -20,7 +20,7 @@ export function AModel(props) {
     }
     
     
-    console.log('Available animations:', Object.keys(actions))
+  
   }, [actions, animations])
   return (
     <group ref={group} {...props} dispose={null}>
