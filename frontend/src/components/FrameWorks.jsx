@@ -34,7 +34,7 @@ export function FrameWorks() {
     alt="skill icon"
     className="rounded-sm duration-200 hover:scale-110 w-8 h-8 object-contain"
     style={{
-      filter: 'brightness(1.1) contrast(1.1)',
+    
       opacity: 1,
     }}
   />
