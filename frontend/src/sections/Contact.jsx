@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 import Alert from '../components/Alert';
 import{Particles} from '../components/Particles';
@@ -8,6 +8,10 @@ import { Environment, OrbitControls } from '@react-three/drei'
 
 
 const Contact = () => {
+   
+    useEffect(() => {
+        emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+    }, []);
     const [formData, setFormData] = useState({name: '', email: '', message: ''});
     const [isLoading, setIsLoading] = useState(false)
     const [showAlert, setShowAlert] = useState(false);
@@ -46,8 +50,7 @@ const Contact = () => {
                     from_email: formData.email,
                     to_email: import.meta.env.VITE_TO_EMAIL,
                     message: formData.message
-                }, 
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                }
             );
             
             console.log('Email sent successfully:', result);
