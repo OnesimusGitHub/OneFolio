@@ -9,9 +9,9 @@ export function FrameWorks() {
       "react",
       "tailwindcss",
       "vite",
-      "express",
-      "node",
-      "postgre",
+      "express_backup",
+      "node_backup",
+      "postgre_backup",
     ]
     
     return (
