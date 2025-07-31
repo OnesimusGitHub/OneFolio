@@ -10,31 +10,13 @@ import { Environment, OrbitControls } from '@react-three/drei'
 const Contact = () => {
    
     useEffect(() => {
-        // Debug: Check if environment variables are loaded
-        console.log('All import.meta.env:', import.meta.env);
-        console.log('NODE_ENV:', import.meta.env.NODE_ENV);
-        console.log('DEV:', import.meta.env.DEV);
-        console.log('MODE:', import.meta.env.MODE);
-        
-        // Check specific variables
-        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-        const toEmail = import.meta.env.VITE_TO_EMAIL;
-        
-        console.log('Individual variables:', {
-            serviceId,
-            templateId,
-            publicKey,
-            toEmail
-        });
         
         if (publicKey) {
             emailjs.init(publicKey);
-            console.log('EmailJS initialized successfully with key:', publicKey);
+            console.log('EmailJS initialized successfully');
         } else {
-            console.error('VITE_EMAILJS_PUBLIC_KEY is undefined!');
-            console.error('Make sure your .env file is in the frontend/ directory and restart the dev server');
+            console.error('VITE_EMAILJS_PUBLIC_KEY is undefined! Please check your environment variables.');
         }
     }, []);
     const [formData, setFormData] = useState({name: '', email: '', message: ''});
@@ -56,14 +38,6 @@ const Contact = () => {
     const handleSubmits = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        
-        // Debug: Log environment variables
-        console.log('Environment variables:', {
-            serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-            publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-            toEmail: import.meta.env.VITE_TO_EMAIL
-        });
         
         try {
             const result = await emailjs.send(
