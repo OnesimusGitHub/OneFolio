@@ -12,13 +12,29 @@ const Contact = () => {
     useEffect(() => {
         // Debug: Check if environment variables are loaded
         console.log('All import.meta.env:', import.meta.env);
-        console.log('VITE_EMAILJS_PUBLIC_KEY:', import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        console.log('NODE_ENV:', import.meta.env.NODE_ENV);
+        console.log('DEV:', import.meta.env.DEV);
+        console.log('MODE:', import.meta.env.MODE);
         
-        if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-            emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-            console.log('EmailJS initialized successfully');
+        // Check specific variables
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+        const toEmail = import.meta.env.VITE_TO_EMAIL;
+        
+        console.log('Individual variables:', {
+            serviceId,
+            templateId,
+            publicKey,
+            toEmail
+        });
+        
+        if (publicKey) {
+            emailjs.init(publicKey);
+            console.log('EmailJS initialized successfully with key:', publicKey);
         } else {
             console.error('VITE_EMAILJS_PUBLIC_KEY is undefined!');
+            console.error('Make sure your .env file is in the frontend/ directory and restart the dev server');
         }
     }, []);
     const [formData, setFormData] = useState({name: '', email: '', message: ''});
