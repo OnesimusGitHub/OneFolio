@@ -6,25 +6,23 @@ export function FrameWorks() {
       "htmlicon", 
       "javascript",
       "neticon",
-      "react_test",
+      "react",
       "tailwindcss",
       "vite",
-      "express_backup",
-      "javascript_test",
-      "postgre_backup",
+      
     ]
     
     return (
       <div className="relative flex h-[15rem] w-full flex-col items-center justify-center">
         <OrbitingCircles iconSize={40}>
           {skills.map((skill, index) => (
-            <Icon key={index} src={skill.includes('_test') ? `/${skill}.png` : `/assets/img/${skill}.png`}/>
+            <Icon key={index} src={`/assets/img/${skill}.png`}/>
           ))}
           
         </OrbitingCircles>
         <OrbitingCircles iconSize={25} radius={100} reverse speed={2}>
            {[...skills].reverse().map((skill, index) => (
-            <Icon key={index} src={skill.includes('_test') ? `/${skill}.png` : `/assets/img/${skill}.png`}/>
+            <Icon key={index} src={`/assets/img/${skill}.png`}/>
           ))}
           
         </OrbitingCircles>
