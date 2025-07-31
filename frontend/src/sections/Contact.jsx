@@ -27,8 +27,17 @@ const Contact = () => {
     const handleSubmits = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        
+        // Debug: Log environment variables
+        console.log('Environment variables:', {
+            serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+            publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+            toEmail: import.meta.env.VITE_TO_EMAIL
+        });
+        
         try {
-            await emailjs.send(
+            const result = await emailjs.send(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
                 import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
                 {
@@ -40,13 +49,16 @@ const Contact = () => {
                 }, 
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
+            
+            console.log('Email sent successfully:', result);
             setIsLoading(false);
             setFormData({name: '', email: '', message: ''});
             showAlertMessage('success', 'Message sent successfully!');
            
         } catch (error) {
+            console.error('Email send error:', error);
             setIsLoading(false);
-            showAlertMessage('danger', 'Something went wrong');
+            showAlertMessage('danger', 'Something went wrong. Please try again.');
         }
     }
 
