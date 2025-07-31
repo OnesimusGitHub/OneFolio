@@ -10,7 +10,16 @@ import { Environment, OrbitControls } from '@react-three/drei'
 const Contact = () => {
    
     useEffect(() => {
-        emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        // Debug: Check if environment variables are loaded
+        console.log('All import.meta.env:', import.meta.env);
+        console.log('VITE_EMAILJS_PUBLIC_KEY:', import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        
+        if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
+            emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+            console.log('EmailJS initialized successfully');
+        } else {
+            console.error('VITE_EMAILJS_PUBLIC_KEY is undefined!');
+        }
     }, []);
     const [formData, setFormData] = useState({name: '', email: '', message: ''});
     const [isLoading, setIsLoading] = useState(false)
