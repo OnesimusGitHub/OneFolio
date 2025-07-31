@@ -10,7 +10,10 @@ export function FrameWorks() {
   "neticon",
   "react",
   "tailwindcss",
-  "vite"
+  "vite",
+  "express",
+  "node",
+  "postgre",
 ]
   return (
     <div className="relative flex h-[15rem] w-full flex-col items-center justify-center">
