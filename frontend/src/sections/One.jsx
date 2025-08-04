@@ -3,7 +3,6 @@ import OneText from '../components/OneText'
 import ParallaxBackground from '../components/ParallaxBackground'
 import { Canvas } from '@react-three/fiber'
 import { GModel } from '../components/GModel'
-import { OrbitControls } from '@react-three/drei'
 import {useMediaQuery} from 'react-responsive'
 import {SModel} from '../components/SModel'
 import Loader from '../components/Loader'
@@ -16,7 +15,7 @@ function One() {
   
   return (
     <section id="home"className='flex items-start justify-center
-     md:items-start md:justify-center min-h-screen overflow-hidden
+     md:items-start md:justify-center min-h-screen
       c-space'>
         <OneText />
         <ParallaxBackground/>
@@ -26,7 +25,7 @@ function One() {
           height: "100vh",
         }}>
         
-        <Canvas>
+        <Canvas >
           <Suspense fallback={<Loader/>}>
 
           {/*  lighting */}
