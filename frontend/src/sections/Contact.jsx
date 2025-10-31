@@ -51,16 +51,22 @@ const Contact = () => {
                     message: formData.message
                 }
             );
-            
-            
             setIsLoading(false);
             setFormData({name: '', email: '', message: ''});
             showAlertMessage('success', 'Message sent successfully!');
-           
         } catch (error) {
-            console.error('Email send error:', error);
             setIsLoading(false);
-            showAlertMessage('danger', 'Something went wrong. Please try again.');
+            // Handle EmailJS 412 error (Gmail invalid grant) gracefully
+            if (error?.status === 412 && error?.text?.includes('Invalid grant')) {
+                showAlertMessage('danger', 'Email service error: Please reconnect or reauthorize the email account.');
+            } else {
+                showAlertMessage('danger', 'Something went wrong. Please try again.');
+            }
+            // Optionally, log error only in development
+            if (import.meta.env.DEV) {
+                // eslint-disable-next-line no-console
+                console.error('Email send error:', error);
+            }
         }
     }
 
