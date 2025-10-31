@@ -49,15 +49,19 @@ export function GModel(props) {
     
 
     const handleWheel = (event) => {
-     if (hovered) {
-    event.preventDefault()
-    event.stopPropagation()
-  }
+      // Only prevent wheel events if hovering over the model
+      if (hovered) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
     }
-    
+
     const handleTouchMove = (event) => {
-      event.preventDefault()
-      event.stopPropagation()
+      // Only prevent touch events if hovering over the model
+      if (hovered) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
     }
     
     const handleDragStart = (event) => {
