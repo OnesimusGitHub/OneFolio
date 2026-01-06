@@ -57,7 +57,7 @@ jspm_packages/
 
 # Gatsby files
 .cache/
-public
+
 !public/favicon.ico
 !public/vite.svg
 
