@@ -8,11 +8,24 @@ import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useMotionValue, useSpring } from 'framer-motion'
 
+// Optimize material settings for better performance
+const optimizeMaterial = (material) => {
+  if (material) {
+    material.precision = 'lowp'
+    material.fog = false
+  }
+  return material
+}
+
 export function GModel(props) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/models/rpg_monster_bat_free_download.glb')
   const { actions } = useAnimations(animations, group)
   
+  // Optimize materials
+  useEffect(() => {
+    Object.values(materials).forEach(optimizeMaterial)
+  }, [materials])
   
   const [position, setPosition] = useState([0, 0, 0])
   const [targetPosition, setTargetPosition] = useState([0, 0, 0])
@@ -21,9 +34,14 @@ export function GModel(props) {
   
  
   const [mousePosition, setMousePosition] = useState([0, 0])
-  
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
   
   const { camera, raycaster, viewport, mouse } = useThree()
+  
+  // Detect touch device
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window)
+  }, [])
   
   useEffect(() => {
     if(animations.length > 0) {
@@ -34,30 +52,37 @@ export function GModel(props) {
   
   useEffect(() => {
     const handleMouseMove = (event) => {
+      if (isTouchDevice) return // Skip on touch devices
       event.preventDefault() 
       
       const mouse = new THREE.Vector2()
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
       
-   
       const worldX = (mouse.x * viewport.width) / 2
       const worldY = (mouse.y * viewport.height) / 2
       
       setMousePosition([worldX, worldY])
     }
     
-
-    const handleWheel = (event) => {
-      // Only prevent wheel events if hovering over the model
-      if (hovered) {
-        event.preventDefault()
-        event.stopPropagation()
+    const handleTouchMove = (event) => {
+      if (!isTouchDevice || !hovered) return
+      event.preventDefault()
+      
+      const touch = event.touches[0]
+      if (touch) {
+        const mouse = new THREE.Vector2()
+        mouse.x = (touch.clientX / window.innerWidth) * 2 - 1
+        mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1
+        
+        const worldX = (mouse.x * viewport.width) / 2
+        const worldY = (mouse.y * viewport.height) / 2
+        
+        setMousePosition([worldX, worldY])
       }
     }
 
-    const handleTouchMove = (event) => {
-      // Only prevent touch events if hovering over the model
+    const handleWheel = (event) => {
       if (hovered) {
         event.preventDefault()
         event.stopPropagation()
@@ -74,21 +99,20 @@ export function GModel(props) {
       event.stopPropagation()
     }
     
-   
     window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
+    window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('dragstart', handleDragStart, { passive: false })
     window.addEventListener('contextmenu', handleContextMenu, { passive: false })
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('dragstart', handleDragStart)
       window.removeEventListener('contextmenu', handleContextMenu)
     }
-  }, [viewport])
+  }, [viewport, isTouchDevice, hovered])
 
  
   useEffect(() => {
@@ -96,11 +120,9 @@ export function GModel(props) {
       event.preventDefault() 
       event.stopPropagation()
       
-   
       const mouse = new THREE.Vector2()
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-      
       
       const worldX = (mouse.x * viewport.width) / 2
       const worldY = (mouse.y * viewport.height) / 2
@@ -110,13 +132,36 @@ export function GModel(props) {
       setIsMoving(true)
     }
     
-   
+    const handleTouch = (event) => {
+      if (!isTouchDevice) return
+      event.preventDefault()
+      event.stopPropagation()
+      
+      const touch = event.touches[0]
+      if (touch) {
+        const mouse = new THREE.Vector2()
+        mouse.x = (touch.clientX / window.innerWidth) * 2 - 1
+        mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1
+        
+        const worldX = (mouse.x * viewport.width) / 2
+        const worldY = (mouse.y * viewport.height) / 2
+        const fixedZ = 0
+        
+        setTargetPosition([worldX, worldY, fixedZ])
+        setIsMoving(true)
+      }
+    }
+    
     const canvas = document.querySelector('canvas')
     if (canvas) {
       canvas.addEventListener('click', handleClick)
-      return () => canvas.removeEventListener('click', handleClick)
+      canvas.addEventListener('touchstart', handleTouch, { passive: false })
+      return () => {
+        canvas.removeEventListener('click', handleClick)
+        canvas.removeEventListener('touchstart', handleTouch)
+      }
     }
-  }, [camera, raycaster, viewport])
+  }, [camera, raycaster, viewport, isTouchDevice])
 
  
   useFrame(() => {
@@ -178,7 +223,7 @@ export function GModel(props) {
       position={position}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      scale={hovered ? 1.1 : 1}
+      scale={hovered && !isTouchDevice ? 1.1 : 1}
       rotation={[6, 9, Math.PI]}
     >
       <group name="Sketchfab_Scene">

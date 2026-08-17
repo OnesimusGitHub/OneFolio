@@ -8,6 +8,15 @@ import * as THREE from 'three'
 import { useMotionValue, useSpring } from 'framer-motion'
 import { useFrame } from '@react-three/fiber'
 
+// Optimize material settings for better performance
+const optimizeMaterial = (material) => {
+  if (material) {
+    material.precision = 'lowp'
+    material.fog = false
+  }
+  return material
+}
+
 export function SModel(props) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF(
@@ -42,7 +51,10 @@ export function SModel(props) {
       materials['01_-_Default'].metalness = 0.8
       materials['01_-_Default'].roughness = 0.2
       materials['01_-_Default'].envMapIntensity = 1.5
+      optimizeMaterial(materials['01_-_Default'])
     }
+    // Optimize all other materials
+    Object.values(materials).forEach(optimizeMaterial)
   }, [materials])
   
 

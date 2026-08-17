@@ -157,6 +157,57 @@ export const myProjects = [
       },
     ],
   },
+  {
+    id: 4,
+    title: "POS and Inventory Management System",
+    description:
+      "A comprehensive Point of Sale (POS) and Inventory Management System built with the PERN stack (PostgreSQL, Express.js, React, Node.js). The system provides real-time inventory tracking, sales management, and automated reporting features designed to streamline business operations for retail and pharmacy environments.",
+    subDescription: [
+      "Implementing a robust POS system for efficient transaction processing, receipt generation, and payment handling with support for multiple payment methods.",
+      "Providing real-time inventory tracking with automated low-stock alerts, batch expiration monitoring, and stock level optimization.",
+      "Generating comprehensive sales reports, inventory analytics, and business insights to support data-driven decision making.",
+      "Featuring role-based access control with separate dashboards for administrators, cashiers, and inventory managers to ensure secure operations.",
+    ],
+    href: "https://github.com/OnesimusGitHub",
+    logo: "",
+    image: [
+      "/assets/img/PharmaSys/763778304_1418998266801964_5537899418107603938_n.jpg",
+      "/assets/img/PharmaSys/764388578_2549234688830252_7975544595279635274_n.jpg",
+      "/assets/img/PharmaSys/764496942_1356819589997263_9066183441750105305_n.jpg",
+      "/assets/img/PharmaSys/765795894_1018665537655350_8492856863016926108_n.jpg",
+      "/assets/img/PharmaSys/766373362_2248183075940059_6502918461460504495_n.jpg",
+      "/assets/img/PharmaSys/767430405_2231309417627774_3158518268431965941_n.jpg",
+      "/assets/img/PharmaSys/768987426_1042340305052328_9151361411108602768_n.jpg",
+      "/assets/img/PharmaSys/769385151_3496179580548129_4173731144971991435_n.jpg",
+    ],
+    tags: [
+      {
+        id: 1,
+        name: "PostgreSQL",
+        path: "/assets/img/postgre.png",
+      },
+      {
+        id: 2,
+        name: "Express.js",
+        path: "/assets/img/express.png",
+      },
+      {
+        id: 3,
+        name: "React",
+        path: "/assets/img/react.png",
+      },
+      {
+        id: 4,
+        name: "Node.js",
+        path: "/assets/img/node.png",
+      },
+      {
+        id: 5,
+        name: "JavaScript",
+        path: "/assets/img/javascript.png",
+      },
+    ],
+  },
   
 ];
 
